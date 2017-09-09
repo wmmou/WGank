@@ -6,7 +6,6 @@ import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-
 /**
  * Created by wmmou on 2017/9/4.
  * e-mail:666@wmmou.cn
@@ -19,7 +18,7 @@ public class GankClient {
     private static Retrofit retrofit;
     private GankClient(){
     }
-    static {
+    static{
         Gson gson = new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
                 .create();
@@ -29,7 +28,7 @@ public class GankClient {
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
     }
-    public static Api getGankRetrofitInstance() {
+    public static Api getGankRetrofitInstance(){
         if (gankRetrofit==null){
             synchronized (GankClient.class){
                 if (gankRetrofit==null){
@@ -39,11 +38,5 @@ public class GankClient {
         }
         return gankRetrofit;
     }
-
-
-
-
-
-
 
 }

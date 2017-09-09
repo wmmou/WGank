@@ -1,6 +1,7 @@
 package cn.wmmou.wgank.net;
 
 import cn.wmmou.wgank.GankConfig;
+import cn.wmmou.wgank.model.GankData;
 import cn.wmmou.wgank.model.RestData;
 import cn.wmmou.wgank.model.WealData;
 import io.reactivex.Observable;
@@ -29,7 +30,7 @@ public interface Api {
 //            @Path("month") int month,
 //            @Path("day") int day);
 //
-//    //请求不同类型干货（通用）
-//    @GET("data/{type}/"+GankConfig.GANK_SIZE+"/{page}")
-//    Observable<GanHuoData> getGanHuoData(@Path("type") String type, @Path("page") int page);
+    //请求不同类型干货（通用）
+    @GET("data/{type}/"+GankConfig.GANK_SIZE+"/{page}")
+    Observable<GankData> getGankData(@Path("type") String type, @Path("page") int page);
 }

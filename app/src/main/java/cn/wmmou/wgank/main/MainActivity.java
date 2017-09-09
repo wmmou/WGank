@@ -35,6 +35,11 @@ public class MainActivity extends ToolBarActivity<MainPresenter> implements IMai
     boolean isrefresh = true;
     boolean canLoading = true;
     private MainPresenter presenter;
+
+    @OnClick(R.id.fab_btn)
+    void  toGank(){
+        presenter.toGankActiivty();
+    }
     @Override
     protected int getLayoutResId(){
         return R.layout.activity_main;

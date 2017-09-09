@@ -1,11 +1,13 @@
 package cn.wmmou.wgank.main;
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.MainThread;
 import android.util.Log;
 
 import java.util.List;
 
 import cn.wmmou.wgank.BasePresenter;
+import cn.wmmou.wgank.gank24k.GankActivity;
 import cn.wmmou.wgank.model.GankData;
 import cn.wmmou.wgank.model.RestData;
 import cn.wmmou.wgank.model.WealData;
@@ -68,11 +70,18 @@ public class MainPresenter extends BasePresenter<IMainView> {
         int size=Math.min(wealdata.results.size(),restData.results.size());
         for (int i=0;i<size;i++){
             wealdata.results.get(i).setDesc(wealdata.results.get(i).getDesc()+","+restData.results.get(i).getDesc());
+            wealdata.results.get(i).setCreatedAt(restData.results.get(i).getUrl());
         }
         return wealdata;
     }
 
     @Override
     public void release() {
+    }
+
+
+    public void  toGankActiivty(){
+        Intent intent=new Intent(context, GankActivity.class);
+        context.startActivity(intent);
     }
 }

@@ -16,7 +16,7 @@ import butterknife.ButterKnife;
 public abstract class BaseActivity<T extends BasePresenter> extends RxAppCompatActivity{
     protected String TAG=this.getClass().getSimpleName();
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState){
+    protected void onCreate( Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         Log.i(TAG,"onCreate");
         setContentView(getLayoutResId());

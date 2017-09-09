@@ -1,6 +1,7 @@
 package cn.wmmou.wgank.main;
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,12 +9,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
+import com.tencent.smtt.sdk.TbsVideo;
+
 import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.wmmou.wgank.R;
 import cn.wmmou.wgank.model.entity.Gank;
+import cn.wmmou.wgank.web.WebActivity;
+
 /**
  * Created by wmmou on 2017/9/5.
  * e-mail:666@wmmou.cn
@@ -68,6 +73,15 @@ public class MainAdaper extends RecyclerView.Adapter<MainAdaper.MianViewHolder>{
         TextView tvTitle;
         @BindView(R.id.weal_img)
         RatioImageView imgWeal;
+        @OnClick(R.id.time_tv)
+        void onClick(){
+//            WebActivity.loadWebViewActivity(context, (Gank) cardView.getTag());
+            Bundle data = new Bundle();
+//            data.putBoolean("standardFullScreen", false);// true表示标准全屏，false表示X5全屏；不设置默认false，
+            data.putBoolean("supportLiteWnd", true);// false：关闭小窗；true：开启小窗；不设置默认true，
+//            data.putInt("DefaultVideoScreen", 1);// 1：以页面内开始播放，2：以全屏开始播放；不设置默认：1
+            TbsVideo.openVideo(context,"http://rbv01.ku6.com/FbWgxVgcAki2ntV94N5t3g.mp4",data);
+        }
 
     }
 }
