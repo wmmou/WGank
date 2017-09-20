@@ -70,7 +70,7 @@ public class MainPresenter extends BasePresenter<IMainView> {
         int size=Math.min(wealdata.results.size(),restData.results.size());
         for (int i=0;i<size;i++){
             wealdata.results.get(i).setDesc(wealdata.results.get(i).getDesc()+","+restData.results.get(i).getDesc());
-            wealdata.results.get(i).setCreatedAt(restData.results.get(i).getUrl());
+//            wealdata.results.get(i).setUrl(restData.results.get(i).getUrl());
         }
         return wealdata;
     }

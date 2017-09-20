@@ -10,13 +10,13 @@ import cn.wmmou.wgank.model.entity.Gank;
  * desc:
  * version:
  */
-
-public class RestData extends BaseData {
+public class RestData extends BaseData{
     public List<Gank> results;
     @Override
-    public String toString() {
+    public String toString(){
         return "FunnyData{" +
                 "results=" + results +
                 '}';
     }
+
 }

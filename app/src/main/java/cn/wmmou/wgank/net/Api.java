@@ -2,6 +2,7 @@ package cn.wmmou.wgank.net;
 
 import cn.wmmou.wgank.GankConfig;
 import cn.wmmou.wgank.model.GankData;
+import cn.wmmou.wgank.model.OneDayData;
 import cn.wmmou.wgank.model.RestData;
 import cn.wmmou.wgank.model.WealData;
 import io.reactivex.Observable;
@@ -22,8 +23,7 @@ public interface Api {
 
     @GET("data/休息视频/" + GankConfig.MEIZI_SIZE + "/{page}")
     Observable<RestData> getFunnyData(@Path("page") int page);
-
-//    //请求某天干货数据
+    //请求某天干货数据
 //    @GET("day/{year}/{month}/{day}")
 //    Observable<GankData> getDailyData(
 //            @Path("year") int year,
@@ -33,4 +33,7 @@ public interface Api {
     //请求不同类型干货（通用）
     @GET("data/{type}/"+GankConfig.GANK_SIZE+"/{page}")
     Observable<GankData> getGankData(@Path("type") String type, @Path("page") int page);
+    //请求某天数据  http://gank.io/api/day/2017/09/15
+    @GET("day/{year}/{month}/{day}")
+    Observable<OneDayData> getGankOneDayData(@Path("year") int year, @Path("month") int month, @Path("day") int day);
 }

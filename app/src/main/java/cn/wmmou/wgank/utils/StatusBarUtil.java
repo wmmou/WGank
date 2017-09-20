@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Build;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -12,6 +13,9 @@ import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+
+import cn.wmmou.wgank.R;
+
 /**
  * Created by wmmou on 2017/9/8.
  * e-mail:666@wmmou.cn
@@ -19,6 +23,7 @@ import java.lang.reflect.Method;
  * version:
  */
 public class StatusBarUtil {
+    private static final String TAG="StatusBarUtil";
     /**
      * 修改状态栏为全透明
      * @param activity
@@ -68,14 +73,17 @@ public class StatusBarUtil {
         int result=0;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
             if(MIUISetStatusBarLightMode(activity, true)){
+                Log.i(TAG,"StatusBarLightMode---miui");
                 result=1;
             }else if(FlymeSetStatusBarLightMode(activity.getWindow(), true)){
+                Log.i(TAG,"StatusBarLightMode---flyme");
                 result=2;
             }else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                Log.i(TAG,"StatusBarLightMode---6.0");
                 activity.getWindow().getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN|View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
                 result=3;
             }else if (Build.MANUFACTURER.equals("nubia")){
-//                setStatusBarColor(activity, R.color.md_white);
+                  setStatusBarColor(activity, R.color.md_white);
             }
         }
         return result;
@@ -114,10 +122,10 @@ public class StatusBarUtil {
      * @param dark 是否把状态栏文字及图标颜色设置为深色
      * @return  boolean 成功执行返回true
      */
-    public static boolean FlymeSetStatusBarLightMode(Window window, boolean dark) {
+    public static boolean FlymeSetStatusBarLightMode(Window window, boolean dark){
         boolean result = false;
-        if (window != null) {
-            try {
+        if (window != null){
+            try{
                 WindowManager.LayoutParams lp = window.getAttributes();
                 Field darkFlag = WindowManager.LayoutParams.class
                         .getDeclaredField("MEIZU_FLAG_DARK_STATUS_BAR_ICON");
@@ -127,15 +135,23 @@ public class StatusBarUtil {
                 meizuFlags.setAccessible(true);
                 int bit = darkFlag.getInt(null);
                 int value = meizuFlags.getInt(lp);
-                if (dark) {
+                if (dark){
                     value |= bit;
-                } else {
+                }else{
                     value &= ~bit;
                 }
                 meizuFlags.setInt(lp, value);
                 window.setAttributes(lp);
                 result = true;
-            } catch (Exception e) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                    //开发版 7.7.13 及以后版本采用了系统API，旧方法无效但不会报错，所以两个方式都要加上
+                    if(dark){
+                        window.getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN| View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+                    }else {
+                        window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+                    }
+                }
+            }catch(Exception e){
             }
         }
         return result;

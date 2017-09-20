@@ -58,7 +58,8 @@ public class WebActivity extends ToolBarActivity<WebPresenter> implements IWebVi
 
         gank = (Gank) getIntent().getSerializableExtra(GankConfig.GANK);
         setTitle(gank.getDesc());
-        presenter.setWebViewSettings(webView, gank.getCreatedAt());
+//        presenter.setWebViewSettings(webView, gank.getCreatedAt());
+        presenter.setWebViewSettings(webView, gank.getUrl());
 //        contentView = (LinearLayout) findViewById(R.id.web_content);
     }
 

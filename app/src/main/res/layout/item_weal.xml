@@ -4,6 +4,7 @@
     android:id="@+id/root_car"
     android:layout_margin="5dp"
     app:cardCornerRadius="5dp"
+
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <LinearLayout

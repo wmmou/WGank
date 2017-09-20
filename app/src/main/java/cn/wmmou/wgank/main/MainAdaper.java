@@ -1,7 +1,11 @@
 package cn.wmmou.wgank.main;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,12 +15,17 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.tencent.smtt.sdk.TbsVideo;
 
+import java.io.Serializable;
 import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.wmmou.wgank.GankConfig;
 import cn.wmmou.wgank.R;
+import cn.wmmou.wgank.gank24k.GankActivity;
+import cn.wmmou.wgank.gankoneday.GankOneDayActivity;
 import cn.wmmou.wgank.model.entity.Gank;
+import cn.wmmou.wgank.utils.ShareElement;
 import cn.wmmou.wgank.web.WebActivity;
 
 /**
@@ -47,17 +56,21 @@ public class MainAdaper extends RecyclerView.Adapter<MainAdaper.MianViewHolder>{
         if (gank!=null){
             holder.cardView.setTag(gank);
             holder.tvTime.setText(gank.getDesc());
-//            holder.tvTitle.setText(gank.getDesc());
             Log.i("adaper",gank.getUrl()+gank.getDesc()+gank.getPublishedAt());
-//            Glide.with(context)
-//                    .load(gank.getUrl())
-//                    .crossFade()
-//                    .into(holder.imgWeal);
+            Glide.with(context)
+                    .load(gank.getUrl())
+                    .crossFade()
+                    .centerCrop()
+                    .into(holder.imgWeal);
         }
     }
     @Override
     public int getItemCount(){
         return lists.size();
+    }
+    @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
     }
     class MianViewHolder extends RecyclerView.ViewHolder{
         View cardView;
@@ -73,15 +86,23 @@ public class MainAdaper extends RecyclerView.Adapter<MainAdaper.MianViewHolder>{
         TextView tvTitle;
         @BindView(R.id.weal_img)
         RatioImageView imgWeal;
-        @OnClick(R.id.time_tv)
+        @OnClick(R.id.root_car)
         void onClick(){
 //            WebActivity.loadWebViewActivity(context, (Gank) cardView.getTag());
-            Bundle data = new Bundle();
+//            Bundle data = new Bundle();
 //            data.putBoolean("standardFullScreen", false);// true表示标准全屏，false表示X5全屏；不设置默认false，
-            data.putBoolean("supportLiteWnd", true);// false：关闭小窗；true：开启小窗；不设置默认true，
+//            data.putBoolean("supportLiteWnd", true);// false：关闭小窗；true：开启小窗；不设置默认true，
 //            data.putInt("DefaultVideoScreen", 1);// 1：以页面内开始播放，2：以全屏开始播放；不设置默认：1
-            TbsVideo.openVideo(context,"http://rbv01.ku6.com/FbWgxVgcAki2ntV94N5t3g.mp4",data);
-        }
-
+//            TbsVideo.openVideo(context,"http://rbv01.ku6.com/FbWgxVgcAki2ntV94N5t3g.mp4",data);
+//            TbsVideo.openVideo(context,"http://rbv01.ku6.com/FbWgxVgcAki2ntV94N5t3g.mp4",data);
+//            Intent intent=new Intent(context, GankOneDayActivity.class);
+//            context.startActivity(intent);
+            ShareElement.shareDrawable=imgWeal.getDrawable();
+            Intent intent = new Intent(context, GankOneDayActivity.class);
+            intent.putExtra(GankConfig.MEIZI, (Serializable) cardView.getTag());
+            ActivityOptionsCompat optionsCompat = ActivityOptionsCompat
+                    .makeSceneTransitionAnimation((Activity) context, imgWeal, GankConfig.TRANSLATE_GIRL_VIEW);
+            ActivityCompat.startActivity((Activity) context, intent, optionsCompat.toBundle());
+    }
     }
 }

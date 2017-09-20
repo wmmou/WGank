@@ -3,6 +3,7 @@ package cn.wmmou.wgank;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.view.MenuItem;
 
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
 
@@ -25,6 +26,18 @@ public abstract class BaseActivity<T extends BasePresenter> extends RxAppCompatA
     }
     protected abstract int getLayoutResId();
     protected abstract void  initPresenter();
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                //在Action Bar的最左边，就是Home icon和标题的区域
+                onBackPressed();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     @Override
     protected void onStart() {
         Log.i(TAG,"onStart");

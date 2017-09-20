@@ -1,4 +1,5 @@
 package cn.wmmou.wgank.main;
+import android.app.Activity;
 import android.os.Build;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,6 +20,7 @@ import cn.wmmou.wgank.BaseActivity;
 import cn.wmmou.wgank.R;
 import cn.wmmou.wgank.ToolBarActivity;
 import cn.wmmou.wgank.model.entity.Gank;
+import cn.wmmou.wgank.utils.SPDataUtil;
 import cn.wmmou.wgank.utils.StatusBarUtil;
 import cn.wmmou.wgank.view.LoadMoreRecyclerView;
 import dalvik.system.PathClassLoader;
@@ -52,12 +54,14 @@ public class MainActivity extends ToolBarActivity<MainPresenter> implements IMai
     }
     @Override
     public void initView(){
-        StatusBarUtil.StatusBarLightMode(this);
-        Log.i(TAG,"rom-----"+ Build.MANUFACTURER+"--"+Build.MODEL);// rom-----nubia--NX507J  SPRD--GM-T5
-        Log.i(TAG, "initview()");
-        ganks = new ArrayList<>();
-        adaper = new MainAdaper(ganks, this);
 
+        StatusBarUtil.StatusBarLightMode(this);
+        Log.i(TAG, "initview()");
+
+        ganks = SPDataUtil.getFirstPageGirls(this);
+        if (ganks==null)
+            ganks = new ArrayList<>();
+        adaper = new MainAdaper(ganks, this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(adaper);
@@ -94,7 +98,7 @@ public class MainActivity extends ToolBarActivity<MainPresenter> implements IMai
      * 下拉刷新
      */
     @Override
-    public void onRefresh() {
+    public void onRefresh(){
         isrefresh = true;
         page = 1;
         presenter.fetchGankData(page);
@@ -111,9 +115,10 @@ public class MainActivity extends ToolBarActivity<MainPresenter> implements IMai
     }
     @Override
     public void statusColor(boolean iswhite){
-        if(iswhite && Build.MANUFACTURER.equals("nubia")){
+        if(iswhite){
+            StatusBarUtil.StatusBarLightMode(this);
             StatusBarUtil.setStatusBarColor(this,R.color.md_white);
-        }else{
+        }else {
             StatusBarUtil.setStatusBarColor(this,R.color.md_deep_orange_400);
             StatusBarUtil.StatusBarLightMode(this);
         }
@@ -124,6 +129,7 @@ public class MainActivity extends ToolBarActivity<MainPresenter> implements IMai
         canLoading = true;
         page++;
         if (isrefresh){
+            SPDataUtil.saveFirstPageGirls(this, list);
             isrefresh = false;
             ganks.clear();
             ganks.addAll(list);
@@ -149,4 +155,5 @@ public class MainActivity extends ToolBarActivity<MainPresenter> implements IMai
     @Override
     public void showNoData(){
     }
+//    Activity
 }

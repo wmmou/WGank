@@ -36,6 +36,7 @@ public class LoadMoreRecyclerView extends RecyclerView {
     public void setFloatingActionButton(FloatingActionButton floatingActionButton) {
         this.floatingActionButton = floatingActionButton;
     }
+
     @Override
     public void onScrolled(int dx, int dy){
         isScrollingToDown=dy>0;
